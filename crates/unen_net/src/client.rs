@@ -17,10 +17,10 @@ pub enum Error {
 }
 
 pub fn create_client() -> DisconnectedClient {
-    DisconnectedClient { }
+    DisconnectedClient {}
 }
 
-pub struct DisconnectedClient { }
+pub struct DisconnectedClient {}
 
 impl DisconnectedClient {
     pub fn connect(
@@ -28,17 +28,17 @@ impl DisconnectedClient {
         client_addr: SocketAddr,
         server_addr: SocketAddr,
     ) -> Result<ConnectedClient, Error> {
-        let socket = UdpSocket::bind(client_addr)
-            .map_err(|err| Error::SocketBindFailed(err.to_string()))?;
-        socket.set_nonblocking(true)
+        let socket =
+            UdpSocket::bind(client_addr).map_err(|err| Error::SocketBindFailed(err.to_string()))?;
+        socket
+            .set_nonblocking(true)
             .map_err(|err| Error::SocketNonBlockingFailed(err.to_string()))?;
 
-        socket.connect(server_addr)
+        socket
+            .connect(server_addr)
             .map_err(|err| Error::LockingFailed(server_addr, err.to_string()))?;
 
-        Ok(ConnectedClient {
-            socket,
-        })
+        Ok(ConnectedClient { socket })
     }
 }
 pub struct ConnectedClient {
@@ -47,7 +47,7 @@ pub struct ConnectedClient {
 
 impl ConnectedClient {
     pub fn disconnect(self) -> DisconnectedClient {
-        DisconnectedClient { }
+        DisconnectedClient {}
     }
 
     pub fn send(&self, buf: &[u8]) -> Result<usize, Error> {

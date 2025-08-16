@@ -13,7 +13,7 @@ enum EngineState {
 /// End users usually don't interact with this directly — use [`StoppedEngine`]
 /// or [`StartedEngine`] instead.
 struct EngineData {
-    state: EngineState
+    state: EngineState,
 }
 
 impl Default for EngineData {

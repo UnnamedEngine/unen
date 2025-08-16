@@ -1,16 +1,17 @@
-pub mod server;
 pub mod client;
+pub mod server;
 
 static MESSAGE_MAX_SIZE: usize = 128;
 
 #[cfg(test)]
 mod tests {
-    use super::server::*;
     use super::client::*;
+    use super::server::*;
 
-    use std::net::{Ipv4Addr, SocketAddrV4, SocketAddr};
+    use std::net::{Ipv4Addr, SocketAddr, SocketAddrV4};
 
-    const LOCAL_ADDR: SocketAddr = SocketAddr::V4(SocketAddrV4::new(Ipv4Addr::new(127, 0, 0, 1), 0));
+    const LOCAL_ADDR: SocketAddr =
+        SocketAddr::V4(SocketAddrV4::new(Ipv4Addr::new(127, 0, 0, 1), 0));
 
     #[test]
     fn send_to_server() {
@@ -21,9 +22,7 @@ mod tests {
             .connect(LOCAL_ADDR, server.addr())
             .expect("should be able to connect to server");
 
-        let sent_bytes = client
-            .send(b"hello!")
-            .expect("should be able to send");
+        let sent_bytes = client.send(b"hello!").expect("should be able to send");
 
         assert_eq!(sent_bytes, 6, "should have sent 6 bytes");
 
@@ -33,7 +32,11 @@ mod tests {
 
         let (addres, bytes) = received_data.pop().unwrap();
 
-        assert_eq!(addres, client.addr(), "should have been received from client");
+        assert_eq!(
+            addres,
+            client.addr(),
+            "should have been received from client"
+        );
         assert_eq!(bytes.as_slice(), b"hello!", "should have received 'hello!'");
     }
 
@@ -60,6 +63,10 @@ mod tests {
 
         let bytes = received_data.pop().unwrap();
 
-        assert_eq!(bytes.as_slice(), b"hello :D", "should have received 'hello :D'");
+        assert_eq!(
+            bytes.as_slice(),
+            b"hello :D",
+            "should have received 'hello :D'"
+        );
     }
 }

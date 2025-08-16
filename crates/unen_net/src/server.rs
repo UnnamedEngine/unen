@@ -13,19 +13,17 @@ pub enum Error {
 }
 
 pub fn create_server() -> StoppedServer {
-    StoppedServer { }
+    StoppedServer {}
 }
 
-pub struct StoppedServer { }
+pub struct StoppedServer {}
 
 impl StoppedServer {
     pub fn listen(self, addr: SocketAddr) -> Result<ListeningServer, Error> {
         let socket = UdpSocket::bind(addr)?;
         socket.set_nonblocking(true)?;
 
-        Ok(ListeningServer {
-            socket,
-        })
+        Ok(ListeningServer { socket })
     }
 }
 
@@ -35,7 +33,7 @@ pub struct ListeningServer {
 
 impl ListeningServer {
     pub fn stop(self) -> StoppedServer {
-        StoppedServer { }
+        StoppedServer {}
     }
 
     pub fn send_to(&self, buf: &[u8], addr: SocketAddr) -> Result<usize, Error> {
