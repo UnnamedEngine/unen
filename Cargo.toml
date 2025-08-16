@@ -1,6 +1,7 @@
 [workspace]
 members = [
-  'crates/unen',
+  'crates/unen', 
+  'crates/unen_net',
 ]
 resolver = '2'
 
@@ -8,6 +9,7 @@ resolver = '2'
 version = '0.0.1'
 edition = '2021'
 
+# Logging
 [workspace.dependencies.log]
 version = '0.4.27'
 [workspace.dependencies.tracing]
@@ -19,3 +21,7 @@ features = [
 version = "0.3.19"
 [workspace.dependencies.tracing-log]
 version = "0.2.0"
+
+# Error Handling
+[workspace.dependencies.thiserror]
+version = "2.0.14"

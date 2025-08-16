@@ -1,0 +1,8 @@
+[package]
+name = 'unen_net'
+version.workspace = true
+edition.workspace = true
+
+# Error Handling
+[dependencies.thiserror]
+workspace = true

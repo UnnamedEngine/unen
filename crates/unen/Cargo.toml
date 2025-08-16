@@ -3,6 +3,7 @@ name = "unen"
 version.workspace = true
 edition.workspace = true
 
+# Logging
 [dependencies.log]
 workspace = true
 [dependencies.tracing]
