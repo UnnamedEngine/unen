@@ -6,3 +6,9 @@ edition.workspace = true
 # Error Handling
 [dependencies.thiserror]
 workspace = true
+
+# Algorithm
+[dependencies.bincode]
+workspace = true
+[dependencies.crc32fast]
+workspace = true

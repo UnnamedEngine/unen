@@ -2,7 +2,7 @@ use std::net::{SocketAddr, UdpSocket};
 
 use thiserror::Error;
 
-use crate::MESSAGE_MAX_SIZE;
+use crate::PACKET_MAX_SIZE;
 
 #[derive(Debug, Error)]
 pub enum Error {
@@ -59,7 +59,7 @@ impl ConnectedClient {
 
     pub fn poll(&self) -> Vec<Vec<u8>> {
         let mut received_data = Vec::new();
-        let mut buf = [0u8; MESSAGE_MAX_SIZE];
+        let mut buf = [0u8; PACKET_MAX_SIZE];
         while let Ok(len) = self.socket.recv(&mut buf) {
             received_data.push(buf[..len].to_vec());
         }
