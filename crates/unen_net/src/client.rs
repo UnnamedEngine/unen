@@ -16,11 +16,15 @@ pub enum Error {
     SendFailed(String),
 }
 
+pub fn create_client() -> DisconnectedClient {
+    DisconnectedClient { }
+}
+
 pub struct DisconnectedClient { }
 
 impl DisconnectedClient {
     pub fn connect(
-        self, 
+        self,
         client_addr: SocketAddr,
         server_addr: SocketAddr,
     ) -> Result<ConnectedClient, Error> {
@@ -31,7 +35,7 @@ impl DisconnectedClient {
 
         socket.connect(server_addr)
             .map_err(|err| Error::LockingFailed(server_addr, err.to_string()))?;
-        
+
         Ok(ConnectedClient {
             socket,
         })
@@ -65,8 +69,4 @@ impl ConnectedClient {
     pub fn addr(&self) -> SocketAddr {
         self.socket.local_addr().unwrap()
     }
-}
-
-pub fn create_client() -> DisconnectedClient {
-    DisconnectedClient { }
 }

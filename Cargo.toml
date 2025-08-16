@@ -1,6 +1,6 @@
 [workspace]
 members = [
-  'crates/unen', 
+  'crates/unen',
   'crates/unen_net',
 ]
 resolver = '2'

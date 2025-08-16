@@ -12,6 +12,10 @@ pub enum Error {
     SendFailed(String),
 }
 
+pub fn create_server() -> StoppedServer {
+    StoppedServer { }
+}
+
 pub struct StoppedServer { }
 
 impl StoppedServer {
@@ -53,8 +57,4 @@ impl ListeningServer {
     pub fn addr(&self) -> SocketAddr {
         self.socket.local_addr().unwrap()
     }
-}
-
-pub fn create_server() -> StoppedServer {
-    StoppedServer { }
 }

@@ -9,7 +9,7 @@ mod tests {
     use super::client::*;
 
     use std::net::{Ipv4Addr, SocketAddrV4, SocketAddr};
-    
+
     const LOCAL_ADDR: SocketAddr = SocketAddr::V4(SocketAddrV4::new(Ipv4Addr::new(127, 0, 0, 1), 0));
 
     #[test]

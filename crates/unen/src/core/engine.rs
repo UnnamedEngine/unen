@@ -1,5 +1,5 @@
 /// Represents the possible states of the engine.
-/// 
+///
 /// Noramlly not used directly by the user.
 /// State transitions are handled via [`StoppedEngine`] and [`StartedEngine`].
 #[derive(Debug, PartialEq, Eq)]
@@ -9,7 +9,7 @@ enum EngineState {
 }
 
 /// Internal structure holding common engine data, including the current state.
-/// 
+///
 /// End users usually don't interact with this directly — use [`StoppedEngine`]
 /// or [`StartedEngine`] instead.
 struct EngineData {
@@ -35,15 +35,15 @@ impl Default for EngineData {
 }
 
 /// Represents the engine in the "stopped" state.
-/// 
+///
 /// From here you can only call [`StoppedEngine::start`] to transition into a
 /// [`StartedEngine`].
-/// 
+///
 /// # Example
-/// 
+///
 /// ```rust
 /// use unen::core::engine::create_engine;
-/// 
+///
 /// let engine = create_engine(); // initial state: stopped
 /// let started = engine.start(); // transition to StartedEngine
 /// ```
@@ -53,12 +53,12 @@ pub struct StoppedEngine {
 
 impl StoppedEngine {
     /// Starts the engine, consuming `self` and returning a [`StartedEngine`].
-    /// 
+    ///
     /// # Example
-    /// 
+    ///
     /// ```rust
     /// use unen::core::engine::create_engine;
-    /// 
+    ///
     /// let engine = create_engine();
     /// let started = engine.start(); // now the engine is started
     /// ```
@@ -69,27 +69,27 @@ impl StoppedEngine {
 }
 
 /// Represents the engine in the "started" state.
-/// 
+///
 /// This type usually never appears in real code flow, since calling
 /// [`StoppedEngine::start`] is expected to enter the main loop and **not
 /// return** under normal circumstances.
-/// 
+///
 /// The existence of this type is only to model state transitions at the type
-/// level, making invalid states unrepresentable. 
+/// level, making invalid states unrepresentable.
 pub struct StartedEngine {
     data: EngineData,
 }
 
 /// Creates a new [`StoppedEngine`].
-/// 
+///
 /// This is the recommended entry point to construct the engine. The initial
 /// state will always be `Stopped`.
-/// 
+///
 /// # Example
-/// 
+///
 /// ```rust
 /// use unen::core::engine::create_engine;
-/// 
+///
 /// let engine = create_engine();
 /// // still stopped, you need to call `.start()`
 /// let engine = engine.start();
