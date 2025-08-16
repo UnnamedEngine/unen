@@ -1,0 +1,13 @@
+[package]
+name = "unen"
+version.workspace = true
+edition.workspace = true
+
+[dependencies.log]
+workspace = true
+[dependencies.tracing]
+workspace = true
+[dependencies.tracing-subscriber]
+workspace = true
+[dependencies.tracing-log]
+workspace = true
