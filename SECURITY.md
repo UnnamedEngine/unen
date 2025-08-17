@@ -4,7 +4,7 @@ This is the security notice for this repository. The notice explains how vulnera
 
 ## Reporting a Vulnerability
 
-If you've found a vulnerability, we would like to know so we can fix it before it is released publicly, please [**Open a draft security advisory**](https://github.com/UnnamedEngine/Code/security/advisories/new).
+If you've found a vulnerability, we would like to know so we can fix it before it is released publicly, please [**Open a draft security advisory**](https://github.com/UnnamedEngine/unen/security/advisories/new).
 
 ## Scope
 

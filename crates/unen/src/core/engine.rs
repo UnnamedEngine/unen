@@ -77,6 +77,7 @@ impl StoppedEngine {
 /// The existence of this type is only to model state transitions at the type
 /// level, making invalid states unrepresentable.
 pub struct StartedEngine {
+    #[allow(dead_code)]
     data: EngineData,
 }
 
