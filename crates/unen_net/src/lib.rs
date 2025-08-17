@@ -10,6 +10,8 @@ mod tests {
     use super::server::*;
 
     use std::net::{Ipv4Addr, SocketAddr, SocketAddrV4};
+    use std::thread;
+    use std::time::Duration;
 
     const LOCAL_ADDR: SocketAddr =
         SocketAddr::V4(SocketAddrV4::new(Ipv4Addr::new(127, 0, 0, 1), 0));
@@ -27,7 +29,14 @@ mod tests {
 
         assert_eq!(sent_bytes, 6, "should have sent 6 bytes");
 
-        let mut received_data = server.poll();
+        let mut received_data = Vec::new();
+        for _ in 0..10 {
+            received_data = server.poll();
+            if !received_data.is_empty() {
+                break;
+            }
+            thread::sleep(Duration::from_millis(10));
+        }
 
         assert_eq!(received_data.len(), 1, "should have received 1 datagram");
 
@@ -58,7 +67,14 @@ mod tests {
 
         assert_eq!(sent_bytes, 8, "should have sent 8 bytes");
 
-        let mut received_data = client.poll();
+        let mut received_data = Vec::new();
+        for _ in 0..10 {
+            received_data = client.poll();
+            if !received_data.is_empty() {
+                break;
+            }
+            thread::sleep(Duration::from_millis(10));
+        }
 
         assert_eq!(received_data.len(), 1, "should have received 1 datagram");
 
