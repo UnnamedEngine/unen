@@ -2,10 +2,9 @@ use bincode::{Decode, Encode};
 use crc32fast::Hasher;
 use thiserror::Error;
 
-use crate::PACKET_MAX_SIZE;
-
-const PROTOCOL_ID: &[u8; 8] = b"UEUDP\0\0\0";
-const END_CHECK: u32 = 0xFFFFFFFF;
+pub const PACKET_MAX_SIZE: usize = 1200;
+pub const PROTOCOL_ID: &[u8; 8] = b"UEUDP001";
+pub const END_CHECK: u32 = 0xFFFFFFFF;
 
 #[derive(Debug, Error)]
 pub enum Error {
@@ -17,7 +16,7 @@ pub enum Error {
     InvalidEnd,
     #[error("encode error: {0}")]
     EncodeError(#[from] bincode::error::EncodeError),
-    #[error("decode error: {0} ")]
+    #[error("decode error: {0}")]
     DecodeError(#[from] bincode::error::DecodeError),
 }
 

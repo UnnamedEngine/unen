@@ -42,7 +42,7 @@ impl Default for EngineData {
 /// # Example
 ///
 /// ```rust
-/// use unen::core::engine::create_engine;
+/// use unen::prelude::*;
 ///
 /// let engine = create_engine(); // initial state: stopped
 /// let started = engine.start(); // transition to StartedEngine
@@ -57,7 +57,7 @@ impl StoppedEngine {
     /// # Example
     ///
     /// ```rust
-    /// use unen::core::engine::create_engine;
+    /// use unen::prelude::*;
     ///
     /// let engine = create_engine();
     /// let started = engine.start(); // now the engine is started
@@ -89,7 +89,7 @@ pub struct StartedEngine {
 /// # Example
 ///
 /// ```rust
-/// use unen::core::engine::create_engine;
+/// use unen::prelude::*;
 ///
 /// let engine = create_engine();
 /// // still stopped, you need to call `.start()`

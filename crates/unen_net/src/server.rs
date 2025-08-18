@@ -2,7 +2,7 @@ use std::net::{SocketAddr, UdpSocket};
 
 use thiserror::Error;
 
-use crate::PACKET_MAX_SIZE;
+use crate::protocol::packet::PACKET_MAX_SIZE;
 
 #[derive(Debug, Error)]
 pub enum Error {

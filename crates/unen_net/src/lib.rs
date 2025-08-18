@@ -1,8 +1,6 @@
 pub mod client;
-pub mod packet;
+pub mod protocol;
 pub mod server;
-
-const PACKET_MAX_SIZE: usize = 1200;
 
 #[cfg(test)]
 mod tests {
