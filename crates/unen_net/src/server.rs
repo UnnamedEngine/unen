@@ -37,22 +37,27 @@ impl ListeningServer {
     }
 
     pub fn send_to(&self, buf: &[u8], addr: SocketAddr) -> Result<usize, Error> {
-        match self.socket.send_to(buf, addr) {
-            Ok(sent_bytes) => Ok(sent_bytes),
-            Err(err) => Err(Error::SendFailed(err.to_string())),
-        }
+        socket_send_to(&self.socket, buf, addr)
     }
 
     pub fn poll(&self) -> Vec<(SocketAddr, Vec<u8>)> {
-        let mut received_data = Vec::new();
-        let mut buf = [0u8; PACKET_MAX_SIZE];
-        while let Ok((len, addr)) = self.socket.recv_from(&mut buf) {
-            received_data.push((addr, buf[..len].to_vec()));
-        }
-        received_data
+        socket_poll(&self.socket)
     }
 
     pub fn addr(&self) -> SocketAddr {
         self.socket.local_addr().unwrap()
     }
+}
+
+fn socket_send_to(socket: &UdpSocket, buf: &[u8], addr: SocketAddr) -> Result<usize, Error> {
+    socket.send_to(buf, addr).map_err(|err| Error::SendFailed(err.to_string()))
+}
+
+fn socket_poll(socket: &UdpSocket) -> Vec<(SocketAddr, Vec<u8>)> {
+    let mut received = Vec::new();
+    let mut buf = [0u8; PACKET_MAX_SIZE];
+    while let Ok((len, addr)) = socket.recv_from(&mut buf) {
+        received.push((addr, buf[..len].to_vec()));
+    }
+    received
 }

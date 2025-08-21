@@ -41,6 +41,7 @@ impl DisconnectedClient {
         Ok(ConnectedClient { socket })
     }
 }
+
 pub struct ConnectedClient {
     socket: UdpSocket,
 }
@@ -51,22 +52,27 @@ impl ConnectedClient {
     }
 
     pub fn send(&self, buf: &[u8]) -> Result<usize, Error> {
-        match self.socket.send(buf) {
-            Ok(sent_bytes) => Ok(sent_bytes),
-            Err(err) => Err(Error::SendFailed(err.to_string())),
-        }
+        socket_send(&self.socket, buf)
     }
 
     pub fn poll(&self) -> Vec<Vec<u8>> {
-        let mut received_data = Vec::new();
-        let mut buf = [0u8; PACKET_MAX_SIZE];
-        while let Ok(len) = self.socket.recv(&mut buf) {
-            received_data.push(buf[..len].to_vec());
-        }
-        received_data
+        socket_poll(&self.socket)
     }
 
     pub fn addr(&self) -> SocketAddr {
         self.socket.local_addr().unwrap()
     }
+}
+
+fn socket_send(socket: &UdpSocket, buf: &[u8]) -> Result<usize, Error> {
+    socket.send(buf).map_err(|err| Error::SendFailed(err.to_string()))
+}
+
+fn socket_poll(socket: &UdpSocket) -> Vec<Vec<u8>> {
+    let mut received = Vec::new();
+    let mut buf = [0u8; PACKET_MAX_SIZE];
+    while let Ok(len) = socket.recv(&mut buf) {
+        received.push(buf[..len].to_owned());
+    }
+    received
 }
