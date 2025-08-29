@@ -21,7 +21,7 @@ features = [
   'log',
 ]
 [workspace.dependencies.tracing-subscriber]
-version = '0.3.19'
+version = '0.3.20'
 [workspace.dependencies.tracing-log]
 version = '0.2.0'
 
