@@ -2,7 +2,7 @@ use std::net::{SocketAddr, UdpSocket};
 
 use thiserror::Error;
 
-use crate::protocol::packet::PACKET_MAX_SIZE;
+use crate::socket::{self, socket_poll_from, socket_send_to};
 
 #[derive(Debug, Error)]
 pub enum Error {
@@ -10,6 +10,8 @@ pub enum Error {
     SocketBindFailed(#[from] std::io::Error),
     #[error("failed to send data: {0}")]
     SendFailed(String),
+    #[error("socket error: {0}")]
+    SocketError(#[from] socket::Error),
 }
 
 pub fn create_server() -> StoppedServer {
@@ -37,27 +39,14 @@ impl ListeningServer {
     }
 
     pub fn send_to(&self, buf: &[u8], addr: SocketAddr) -> Result<usize, Error> {
-        socket_send_to(&self.socket, buf, addr)
+        Ok(socket_send_to(&self.socket, buf, addr)?)
     }
 
     pub fn poll(&self) -> Vec<(SocketAddr, Vec<u8>)> {
-        socket_poll(&self.socket)
+        socket_poll_from(&self.socket)
     }
 
     pub fn addr(&self) -> SocketAddr {
         self.socket.local_addr().unwrap()
     }
-}
-
-fn socket_send_to(socket: &UdpSocket, buf: &[u8], addr: SocketAddr) -> Result<usize, Error> {
-    socket.send_to(buf, addr).map_err(|err| Error::SendFailed(err.to_string()))
-}
-
-fn socket_poll(socket: &UdpSocket) -> Vec<(SocketAddr, Vec<u8>)> {
-    let mut received = Vec::new();
-    let mut buf = [0u8; PACKET_MAX_SIZE];
-    while let Ok((len, addr)) = socket.recv_from(&mut buf) {
-        received.push((addr, buf[..len].to_vec()));
-    }
-    received
 }

@@ -2,7 +2,10 @@ use std::net::{SocketAddr, UdpSocket};
 
 use thiserror::Error;
 
-use crate::protocol::packet::PACKET_MAX_SIZE;
+use crate::{
+    protocol::{self},
+    socket::{self, socket_poll, socket_send},
+};
 
 #[derive(Debug, Error)]
 pub enum Error {
@@ -14,6 +17,10 @@ pub enum Error {
     LockingFailed(SocketAddr, String),
     #[error("failed to send data: {0}")]
     SendFailed(String),
+    #[error("socket error: {0}")]
+    SocketError(#[from] socket::Error),
+    #[error("protocol error: {0}")]
+    ProtocolErro(#[from] protocol::Error),
 }
 
 pub fn create_client() -> DisconnectedClient {
@@ -52,7 +59,7 @@ impl ConnectedClient {
     }
 
     pub fn send(&self, buf: &[u8]) -> Result<usize, Error> {
-        socket_send(&self.socket, buf)
+        Ok(socket_send(&self.socket, buf)?)
     }
 
     pub fn poll(&self) -> Vec<Vec<u8>> {
@@ -62,17 +69,4 @@ impl ConnectedClient {
     pub fn addr(&self) -> SocketAddr {
         self.socket.local_addr().unwrap()
     }
-}
-
-fn socket_send(socket: &UdpSocket, buf: &[u8]) -> Result<usize, Error> {
-    socket.send(buf).map_err(|err| Error::SendFailed(err.to_string()))
-}
-
-fn socket_poll(socket: &UdpSocket) -> Vec<Vec<u8>> {
-    let mut received = Vec::new();
-    let mut buf = [0u8; PACKET_MAX_SIZE];
-    while let Ok(len) = socket.recv(&mut buf) {
-        received.push(buf[..len].to_owned());
-    }
-    received
 }
