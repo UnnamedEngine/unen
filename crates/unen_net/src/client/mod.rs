@@ -24,10 +24,16 @@ pub enum Error {
 }
 
 pub fn create_client() -> DisconnectedClient {
-    DisconnectedClient {}
+    DisconnectedClient::default()
 }
 
 pub struct DisconnectedClient {}
+
+impl Default for DisconnectedClient {
+    fn default() -> Self {
+        Self { }
+    }
+}
 
 impl DisconnectedClient {
     pub fn connect(

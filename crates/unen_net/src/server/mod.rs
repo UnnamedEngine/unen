@@ -15,10 +15,16 @@ pub enum Error {
 }
 
 pub fn create_server() -> StoppedServer {
-    StoppedServer {}
+    StoppedServer::default()
 }
 
 pub struct StoppedServer {}
+
+impl Default for StoppedServer {
+    fn default() -> Self {
+        Self { }
+    }
+}
 
 impl StoppedServer {
     pub fn listen(self, addr: SocketAddr) -> Result<ListeningServer, Error> {
