@@ -1,3 +1,7 @@
+use unen_event::{EventHandler, EventManager};
+
+use crate::event::EngineEvent;
+
 /// Represents the possible states of the engine.
 ///
 /// Noramlly not used directly by the user.
@@ -14,22 +18,16 @@ enum EngineState {
 /// or [`StartedEngine`] instead.
 struct EngineData {
     state: EngineState,
+    event_manager: EventManager,
 }
 
 impl Default for EngineData {
     fn default() -> Self {
-        // The logger is started here to make sure we have logging from the
-        // start
-        // Another important thing is that we DON'T want logging for tests
-        #[cfg(not(test))]
-        {
-            use crate::core::logging;
-
-            logging::setup_logger();
-        }
+        let event_manager = EventManager::default();
 
         Self {
             state: EngineState::Stopped,
+            event_manager,
         }
     }
 }
@@ -42,7 +40,7 @@ impl Default for EngineData {
 /// # Example
 ///
 /// ```rust
-/// use unen::prelude::*;
+/// use unen_core::prelude::*;
 ///
 /// let engine = create_engine(); // initial state: stopped
 /// let started = engine.start(); // transition to StartedEngine
@@ -57,14 +55,21 @@ impl StoppedEngine {
     /// # Example
     ///
     /// ```rust
-    /// use unen::prelude::*;
+    /// use unen_core::prelude::*;
     ///
     /// let engine = create_engine();
     /// let started = engine.start(); // now the engine is started
     /// ```
     pub fn start(mut self) -> StartedEngine {
         self.data.state = EngineState::Started;
+        self.data.event_manager.emit(EngineEvent::Starting);
+        self.data.event_manager.emit(EngineEvent::Started);
         StartedEngine { data: self.data }
+    }
+
+    pub fn add_event_handler<H: EventHandler + 'static>(mut self, handler: H) -> Self {
+        self.data.event_manager.add_handler(handler);
+        self
     }
 }
 
@@ -81,6 +86,24 @@ pub struct StartedEngine {
     data: EngineData,
 }
 
+impl StartedEngine {
+    /// Stops the engine, consuming `self` and returning a [`StoppedEngine`].
+    ///
+    /// # Example
+    ///
+    /// ```rust
+    /// use unen_core::prelude::*;
+    ///
+    /// let engine = create_engine();
+    /// let stopped = engine.start().stop(); // starts and stops the engine
+    /// ```
+    pub fn stop(mut self) -> StoppedEngine {
+        self.data.event_manager.emit(EngineEvent::Stopping);
+        self.data.event_manager.emit(EngineEvent::Stopped);
+        StoppedEngine { data: self.data }
+    }
+}
+
 /// Creates a new [`StoppedEngine`].
 ///
 /// This is the recommended entry point to construct the engine. The initial
@@ -89,7 +112,7 @@ pub struct StartedEngine {
 /// # Example
 ///
 /// ```rust
-/// use unen::prelude::*;
+/// use unen_core::prelude::*;
 ///
 /// let engine = create_engine();
 /// // still stopped, you need to call `.start()`

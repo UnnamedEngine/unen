@@ -1,0 +1,15 @@
+[package]
+name = "unen_event"
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+repository.workspace = true
+keywords.workspace = true
+
+[features]
+default = []
+derive = ["unen_event_derive"]
+
+[dependencies.unen_event_derive]
+path = "../unen_event_derive"
+optional = true

@@ -1,0 +1,17 @@
+[package]
+name = "unen_event_derive"
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+repository.workspace = true
+keywords.workspace = true
+
+[lib]
+proc-macro = true
+
+[dependencies.syn]
+workspace = true
+[dependencies.quote]
+workspace = true
+[dependencies.proc-macro2]
+workspace = true

@@ -1,5 +1,5 @@
 [package]
-name = "unen"
+name = "unen_logging"
 version.workspace = true
 edition.workspace = true
 license.workspace = true
@@ -10,10 +10,11 @@ keywords.workspace = true
 path = "../unen_core"
 [dependencies.unen_event]
 path = "../unen_event"
-features = ["derive"]
-[dependencies.unen_logging]
-path = "../unen_logging"
 
-[[example]]
-name = "basic_setup"
-path = "examples/basic_setup.rs"
+# Logging
+[dependencies.log]
+workspace = true
+[dependencies.tracing]
+workspace = true
+[dependencies.tracing-subscriber]
+workspace = true
