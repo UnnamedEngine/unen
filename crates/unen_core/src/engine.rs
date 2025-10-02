@@ -1,6 +1,5 @@
-use unen_event::{EventHandler, EventManager};
-
-use crate::event::EngineEvent;
+use unen_event::prelude::{EngineEvent, EventHandler};
+use unen_runner::prelude::{MininalRunner, Runner, RunnerBox};
 
 /// Represents the possible states of the engine.
 ///
@@ -18,16 +17,12 @@ enum EngineState {
 /// or [`StartedEngine`] instead.
 struct EngineData {
     state: EngineState,
-    event_manager: EventManager,
 }
 
 impl Default for EngineData {
     fn default() -> Self {
-        let event_manager = EventManager::default();
-
         Self {
             state: EngineState::Stopped,
-            event_manager,
         }
     }
 }
@@ -36,39 +31,38 @@ impl Default for EngineData {
 ///
 /// From here you can only call [`StoppedEngine::start`] to transition into a
 /// [`StartedEngine`].
-///
-/// # Example
-///
-/// ```rust
-/// use unen_core::prelude::*;
-///
-/// let engine = create_engine(); // initial state: stopped
-/// let started = engine.start(); // transition to StartedEngine
-/// ```
 pub struct StoppedEngine {
     data: EngineData,
+    runner: RunnerBox,
 }
 
 impl StoppedEngine {
     /// Starts the engine, consuming `self` and returning a [`StartedEngine`].
-    ///
-    /// # Example
-    ///
-    /// ```rust
-    /// use unen_core::prelude::*;
-    ///
-    /// let engine = create_engine();
-    /// let started = engine.start(); // now the engine is started
-    /// ```
     pub fn start(mut self) -> StartedEngine {
         self.data.state = EngineState::Started;
-        self.data.event_manager.emit(EngineEvent::Starting);
-        self.data.event_manager.emit(EngineEvent::Started);
-        StartedEngine { data: self.data }
+        // We must step since there is no runner yet
+        self.runner.emit(EngineEvent::Starting);
+        self.runner.step();
+
+        // We must step since there is no runner yet
+        self.runner.emit(EngineEvent::Started);
+        self.runner.step();
+
+        self.runner.run();
+
+        StartedEngine {
+            data: self.data,
+            runner: self.runner,
+        }
     }
 
     pub fn add_event_handler<H: EventHandler + 'static>(mut self, handler: H) -> Self {
-        self.data.event_manager.add_handler(handler);
+        self.runner.add_event_handler(handler);
+        self
+    }
+
+    pub fn set_runner<R: Runner + 'static>(mut self, runner: R) -> Self {
+        self.runner = RunnerBox::new(runner);
         self
     }
 }
@@ -82,25 +76,25 @@ impl StoppedEngine {
 /// The existence of this type is only to model state transitions at the type
 /// level, making invalid states unrepresentable.
 pub struct StartedEngine {
-    #[allow(dead_code)]
     data: EngineData,
+    runner: RunnerBox,
 }
 
 impl StartedEngine {
     /// Stops the engine, consuming `self` and returning a [`StoppedEngine`].
-    ///
-    /// # Example
-    ///
-    /// ```rust
-    /// use unen_core::prelude::*;
-    ///
-    /// let engine = create_engine();
-    /// let stopped = engine.start().stop(); // starts and stops the engine
-    /// ```
     pub fn stop(mut self) -> StoppedEngine {
-        self.data.event_manager.emit(EngineEvent::Stopping);
-        self.data.event_manager.emit(EngineEvent::Stopped);
-        StoppedEngine { data: self.data }
+        // We must step since there is no runner anymore
+        self.runner.emit(EngineEvent::Stopping);
+        self.runner.step();
+
+        // We must step since there is no runner anymore
+        self.runner.emit(EngineEvent::Stopped);
+        self.runner.step();
+
+        StoppedEngine {
+            data: self.data,
+            runner: self.runner,
+        }
     }
 }
 
@@ -108,18 +102,9 @@ impl StartedEngine {
 ///
 /// This is the recommended entry point to construct the engine. The initial
 /// state will always be `Stopped`.
-///
-/// # Example
-///
-/// ```rust
-/// use unen_core::prelude::*;
-///
-/// let engine = create_engine();
-/// // still stopped, you need to call `.start()`
-/// let engine = engine.start();
-/// ```
 pub fn create_engine() -> StoppedEngine {
     StoppedEngine {
         data: Default::default(),
+        runner: RunnerBox::new(MininalRunner::default()),
     }
 }

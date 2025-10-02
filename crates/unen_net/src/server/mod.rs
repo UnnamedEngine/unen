@@ -18,13 +18,8 @@ pub fn create_server() -> StoppedServer {
     StoppedServer::default()
 }
 
+#[derive(Default)]
 pub struct StoppedServer {}
-
-impl Default for StoppedServer {
-    fn default() -> Self {
-        Self { }
-    }
-}
 
 impl StoppedServer {
     pub fn listen(self, addr: SocketAddr) -> Result<ListeningServer, Error> {

@@ -27,13 +27,8 @@ pub fn create_client() -> DisconnectedClient {
     DisconnectedClient::default()
 }
 
+#[derive(Default)]
 pub struct DisconnectedClient {}
-
-impl Default for DisconnectedClient {
-    fn default() -> Self {
-        Self { }
-    }
-}
 
 impl DisconnectedClient {
     pub fn connect(

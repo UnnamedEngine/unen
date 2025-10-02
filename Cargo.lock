@@ -44,6 +44,12 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "bbd2bcb4c963f2ddae06a2efc7e9f3591312473c50c6685e1f298068316e66fe"
 
 [[package]]
+name = "libc"
+version = "0.2.176"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "58f929b4d672ea937a23a1ab494143d968337a5f47e56d0815df1e0890ddf174"
+
+[[package]]
 name = "log"
 version = "0.4.27"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -122,6 +128,25 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "f40ca3c46823713e0d4209592e8d6e826aa57e928f09752619fc696c499637f6"
 dependencies = [
  "lazy_static",
+]
+
+[[package]]
+name = "signal-hook"
+version = "0.3.18"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "d881a16cf4426aa584979d30bd82cb33429027e42122b169753d6ef1085ed6e2"
+dependencies = [
+ "libc",
+ "signal-hook-registry",
+]
+
+[[package]]
+name = "signal-hook-registry"
+version = "1.4.6"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "b2a4719bff48cee6b39d12c020eeb490953ad2443b7055bd0b21fca26bd8c28b"
+dependencies = [
+ "libc",
 ]
 
 [[package]]
@@ -235,6 +260,7 @@ dependencies = [
  "unen_core",
  "unen_event",
  "unen_logging",
+ "unen_runner",
 ]
 
 [[package]]
@@ -244,6 +270,7 @@ dependencies = [
  "log",
  "tracing",
  "unen_event",
+ "unen_runner",
 ]
 
 [[package]]
@@ -280,6 +307,14 @@ dependencies = [
  "bincode",
  "crc32fast",
  "thiserror",
+]
+
+[[package]]
+name = "unen_runner"
+version = "0.0.1"
+dependencies = [
+ "signal-hook",
+ "unen_event",
 ]
 
 [[package]]

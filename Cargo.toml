@@ -4,7 +4,7 @@ members = [
   "crates/unen_event",
   "crates/unen_event_derive",
   "crates/unen_core",
-  "crates/unen", "crates/unen_logging",
+  "crates/unen", "crates/unen_logging", "crates/unen_runner",
 ]
 resolver = "2"
 
@@ -49,3 +49,7 @@ features = [
 ]
 [workspace.dependencies.crc32fast]
 version = "1.5.0"
+
+# Execution
+[workspace.dependencies.signal-hook]
+version = "0.3.18"

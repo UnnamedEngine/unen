@@ -13,6 +13,8 @@ path = "../unen_event"
 features = ["derive"]
 [dependencies.unen_logging]
 path = "../unen_logging"
+[dependencies.unen_runner]
+path = "../unen_runner"
 
 [[example]]
 name = "basic_setup"
