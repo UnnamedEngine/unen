@@ -17,20 +17,20 @@ keywords = ["unen"]
 
 # Logging
 [workspace.dependencies.log]
-version = "0.4.27"
+version = "0.4.28"
 [workspace.dependencies.tracing]
 version = "0.1.41"
 features = [
   "log",
 ]
 [workspace.dependencies.tracing-subscriber]
-version = "0.3.19"
+version = "0.3.20"
 [workspace.dependencies.tracing-log]
 version = "0.2.0"
 
 # Error Handling
 [workspace.dependencies.thiserror]
-version = "2.0.15"
+version = "2.0.17"
 
 # Derive
 [workspace.dependencies.syn]
