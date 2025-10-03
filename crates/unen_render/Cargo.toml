@@ -1,5 +1,5 @@
 [package]
-name = "unen_logging"
+name = "unen_render"
 version.workspace = true
 edition.workspace = true
 license.workspace = true
@@ -7,9 +7,12 @@ repository.workspace = true
 keywords.workspace = true
 
 [dependencies]
-unen_core = { path = "../unen_core" }
 unen_event = { path = "../unen_event" }
+unen_window = { path = "../unen_window" }
 
 log = { workspace = true }
-tracing = { workspace = true }
-tracing-subscriber = { workspace = true }
+
+pollster = { workspace = true }
+
+wgpu = { workspace = true }
+raw-window-handle = { workspace = true }

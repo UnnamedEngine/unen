@@ -10,6 +10,5 @@ keywords.workspace = true
 default = []
 derive = ["unen_event_derive"]
 
-[dependencies.unen_event_derive]
-path = "../unen_event_derive"
-optional = true
+[dependencies]
+unen_event_derive = { path = "../unen_event_derive", optional = true }

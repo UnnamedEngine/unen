@@ -9,9 +9,7 @@ keywords.workspace = true
 [lib]
 proc-macro = true
 
-[dependencies.syn]
-workspace = true
-[dependencies.quote]
-workspace = true
-[dependencies.proc-macro2]
-workspace = true
+[dependencies]
+syn = { workspace = true }
+quote = { workspace = true }
+proc-macro2 = { workspace = true }

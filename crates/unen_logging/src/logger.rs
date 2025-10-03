@@ -9,7 +9,7 @@ impl EventHandler for LoggerEventHandler {
             match engine_event {
                 EngineEvent::Starting => {
                     tracing_subscriber::fmt()
-                        .with_max_level(tracing::Level::TRACE)
+                        .with_max_level(tracing::Level::INFO)
                         .with_target(false)
                         .with_level(true)
                         .init();
@@ -18,6 +18,7 @@ impl EventHandler for LoggerEventHandler {
                 EngineEvent::Started => {
                     log::info!("UnnamedEngine successfully started");
                 }
+                EngineEvent::Update => {}
                 EngineEvent::Stopping => {
                     log::info!("UnnamedEngine is stopping");
                 }

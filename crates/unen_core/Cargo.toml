@@ -6,14 +6,9 @@ license.workspace = true
 repository.workspace = true
 keywords.workspace = true
 
-[dependencies.unen_event]
-path = "../unen_event"
-features = ["derive"]
-[dependencies.unen_runner]
-path = "../unen_runner"
+[dependencies]
+unen_event = { path = "../unen_event", features = ["derive"] }
+unen_runner = { path = "../unen_runner" }
 
-# Logging
-[dependencies.log]
-workspace = true
-[dependencies.tracing]
-workspace = true
+log = { workspace = true }
+tracing = { workspace = true }

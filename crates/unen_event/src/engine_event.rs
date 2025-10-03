@@ -4,6 +4,7 @@ use crate::prelude::Event;
 pub enum EngineEvent {
     Starting,
     Started,
+    Update,
     Stopping,
     Stopped,
 }

@@ -1,5 +1,5 @@
 [package]
-name = "unen_runner"
+name = "unen_window"
 version.workspace = true
 edition.workspace = true
 license.workspace = true
@@ -9,4 +9,7 @@ keywords.workspace = true
 [dependencies]
 unen_event = { path = "../unen_event", features = ["derive"] }
 
-signal-hook = { workspace = true }
+log = { workspace = true }
+
+wgpu = { workspace = true }
+raw-window-handle = { workspace = true }

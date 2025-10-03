@@ -4,7 +4,12 @@ members = [
   "crates/unen_event",
   "crates/unen_event_derive",
   "crates/unen_core",
-  "crates/unen", "crates/unen_logging", "crates/unen_runner",
+  "crates/unen_logging",
+  "crates/unen_runner",
+  "crates/unen_window",
+  "crates/unen_winit",
+  "crates/unen_render",
+  "crates/unen",
 ]
 resolver = "2"
 
@@ -15,41 +20,39 @@ license = "MIT"
 repository = "https://github.com/UnnamedEngine/unen"
 keywords = ["unen"]
 
+[profile.release]
+strip = true
+
+[workspace.dependencies]
 # Logging
-[workspace.dependencies.log]
-version = "0.4.28"
-[workspace.dependencies.tracing]
-version = "0.1.41"
-features = [
-  "log",
-]
-[workspace.dependencies.tracing-subscriber]
-version = "0.3.20"
-[workspace.dependencies.tracing-log]
-version = "0.2.0"
+log = { version = "0.4.28"}
+tracing = { version = "0.1.41", features = ["log"] }
+tracing-subscriber ={ version = "0.3.20" }
 
 # Error Handling
-[workspace.dependencies.thiserror]
-version = "2.0.17"
+thiserror ={ version = "2.0.17" }
 
-# Derive
-[workspace.dependencies.syn]
-version = "2.0.106"
-features = ["full"]
-[workspace.dependencies.quote]
-version = "1.0.41"
-[workspace.dependencies.proc-macro2]
-version = "1.0.101"
+# Derive Macros
+syn = { version = "2.0.106", features = ["full"] }
+quote = { version = "1.0.41"}
+proc-macro2 = { version = "1.0.101" }
 
 # Algorithm
-[workspace.dependencies.bincode]
-version = "2.0.1"
-features = [
-  "serde"
-]
-[workspace.dependencies.crc32fast]
-version = "1.5.0"
+bincode = { version = "2.0.1", features = ["serde"] }
+crc32fast = { version = "1.5.0" }
 
 # Execution
-[workspace.dependencies.signal-hook]
-version = "0.3.18"
+signal-hook = { version = "0.3.18" }
+pollster = { version = "0.4.0" }
+
+# Rendering
+winit = { version = "0.30.12", features = ["android-native-activity"] }
+wgpu = { version = "27.0.1", features = ["webgl"] }
+raw-window-handle = { version = "0.6.2"}
+
+# Web
+console_error_panic_hook = { version = "0.1.7" }
+console_log = { version = "1.0.0" }
+wasm-bindgen = { version = "0.2.104" }
+wasm-bindgen-futures = { version = "0.4.54" }
+web-sys = { version = "0.3", features = ["Document", "Window", "Element"] }

@@ -6,12 +6,8 @@ license.workspace = true
 repository.workspace = true
 keywords.workspace = true
 
-# Error Handling
-[dependencies.thiserror]
-workspace = true
+[dependencies]
+thiserror = { workspace = true }
 
-# Algorithm
-[dependencies.bincode]
-workspace = true
-[dependencies.crc32fast]
-workspace = true
+bincode = { workspace = true }
+crc32fast = { workspace = true }
